@@ -1,0 +1,833 @@
+{
+ "schema": "fuzz-v1",
+ "checks": [
+  {
+   "key": "fuzz-u-fuzz-01-00",
+   "group": "unified",
+   "family": "u-fuzz-01",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "--- a.txt\n+++ a.txt\n@@ -1,1 +1,1 @@\n-one\n+uno\n--- b.txt\n+++ b.txt\n@@ -1,1 +1,1 @@\n-red\n+rojo\n",
+    "a.txt": "one\ntwo\nthree\n",
+    "b.txt": "red\nblue\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M a.txt\nM b.txt\nok: 2 files\n",
+    "changes": {
+     "a.txt": "uno\ntwo\nthree\n",
+     "b.txt": "rojo\nblue\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-02-01",
+   "group": "unified",
+   "family": "u-fuzz-02",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "diff --git a/empty.txt b/empty.txt\nnew file mode 100644\n--- /dev/null\n+++ b/empty.txt\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "A empty.txt\nok: 1 file\n",
+    "changes": {
+     "empty.txt": ""
+    }
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-03-02",
+   "group": "unified",
+   "family": "u-fuzz-03",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "diff --git a/x\n--- a/x\n+++ b/x\n@@ -1,1 +1,1 @@\n-a\n+b\n",
+    "x": "a\n"
+   },
+   "expect": {
+    "exit": 2,
+    "stdout": "error: parse 1\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-04-03",
+   "group": "unified",
+   "family": "u-fuzz-04",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "--- f.txt\n+++ f.txt\n@@ -0,0 +1,1 @@\n+a\n",
+    "f.txt": "b\nc\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M f.txt\nok: 1 file\n",
+    "changes": {
+     "f.txt": "a\nb\nc\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-05-04",
+   "group": "unified",
+   "family": "u-fuzz-05",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "diff --git a/old.txt b/new.txt\nrename from old.txt\nrename to new.txt\n--- a/old.txt\n+++ b/new.txt\n@@ -1,1 +1,1 @@\n-x\n+z\n",
+    "old.txt": "x\n",
+    "new.txt": "y\n"
+   },
+   "expect": {
+    "exit": 1,
+    "stdout": "error: exists new.txt\nfailed: 1 of 1 edits\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-06-05",
+   "group": "unified",
+   "family": "u-fuzz-06",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "--- /dev/null\n+++ b/made.txt\n@@ -0,0 +1,2 @@\n+hello\n+world\n--- made.txt\n+++ made.txt\n@@ -2,1 +2,1 @@\n-world\n+there\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "A made.txt\nok: 1 file\n",
+    "changes": {
+     "made.txt": "hello\nthere\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-07-06",
+   "group": "unified",
+   "family": "u-fuzz-07",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "--- f.txt\n+++ f.txt\n@@ -2,1 +2,1 @@\n-b\n\\ No newline at end of file\n+c\n",
+    "f.txt": "a\nb\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M f.txt\nok: 1 file\n",
+    "changes": {
+     "f.txt": "a\nc\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-08-07",
+   "group": "unified",
+   "family": "u-fuzz-08",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "--- f.txt\n+++ f.txt\n@@ -1,1 +1,1 @@\n-a\n+x\n",
+    "f.txt": "a\r\nb\r\nc\r\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M f.txt\nok: 1 file\n",
+    "changes": {
+     "f.txt": "x\r\nb\r\nc\r\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-09-08",
+   "group": "unified",
+   "family": "u-fuzz-09",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "--- f.txt\n+++ f.txt\n@@ -1,1 +1,1 @@\n-a\n+x\n",
+    "f.txt": "a\nb"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M f.txt\nok: 1 file\n",
+    "changes": {
+     "f.txt": "x\nb"
+    }
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-10-09",
+   "group": "unified",
+   "family": "u-fuzz-10",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "--- f.txt\n+++ f.txt\n@@ -1,1 +1,1 @@\n---- foo\n+--- baz\n",
+    "f.txt": "--- foo\nbar\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M f.txt\nok: 1 file\n",
+    "changes": {
+     "f.txt": "--- baz\nbar\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-11-10",
+   "group": "unified",
+   "family": "u-fuzz-11",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "diff --git a/f.txt b/f.txt\n--- f.txt\n@@ -1,1 +1,1 @@\n-a\n+b\n",
+    "f.txt": "a\n"
+   },
+   "expect": {
+    "exit": 2,
+    "stdout": "error: parse 3\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-12-11",
+   "group": "unified",
+   "family": "u-fuzz-12",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "@@ -1,1 +1,1 @@\n-a\n+b\n--- a.txt\n+++ b.txt\n",
+    "a.txt": "a\n"
+   },
+   "expect": {
+    "exit": 2,
+    "stdout": "error: parse 1\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-13-12",
+   "group": "unified",
+   "family": "u-fuzz-13",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "just some prose\nno diff here\n"
+   },
+   "expect": {
+    "exit": 2,
+    "stdout": "error: format\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-14-13",
+   "group": "unified",
+   "family": "u-fuzz-14",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "--- f.txt\n+++ f.txt\n@@ -1,2 +1,3 @@\n 1\n+1.5\n 2\n@@ -6,2 +7,2 @@\n 6\n-7\n+seven\n 8\n",
+    "f.txt": "1\n2\n3\n4\n5\n6\n7\n8\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M f.txt\nok: 1 file\n",
+    "changes": {
+     "f.txt": "1\n1.5\n2\n3\n4\n5\n6\nseven\n8\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-15-14",
+   "group": "unified",
+   "family": "u-fuzz-15",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "--- f.txt\n+++ f.txt\n@@ -99,0 +99,1 @@\n+z\n",
+    "f.txt": "a\nb\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M f.txt\nok: 1 file\n",
+    "changes": {
+     "f.txt": "a\nb\nz\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-u-fuzz-16-15",
+   "group": "unified",
+   "family": "u-fuzz-16",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "@@ -1,1 +1,1 @@\n-a\n+b\n",
+    "f.txt": "a\n"
+   },
+   "expect": {
+    "exit": 2,
+    "stdout": "error: format\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-s-fuzz-01-16",
+   "group": "search-replace",
+   "family": "s-fuzz-01",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "<<<<<<< SEARCH\nold\n=======\nnew\n>>>>>>> REPLACE\n"
+   },
+   "expect": {
+    "exit": 2,
+    "stdout": "error: parse 1\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-s-fuzz-02-17",
+   "group": "search-replace",
+   "family": "s-fuzz-02",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "src/a.txt\n```diff\n<<<<<<< SEARCH\nold\n=======\nnew\n>>>>>>> REPLACE\n",
+    "src/a.txt": "old\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M src/a.txt\nok: 1 file\n",
+    "changes": {
+     "src/a.txt": "new\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-s-fuzz-03-18",
+   "group": "search-replace",
+   "family": "s-fuzz-03",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "a.txt\n<<<<<<< SEARCH\none\n=======\nuno\n>>>>>>> REPLACE\n<<<<<<< SEARCH\ntwo\n=======\ndos\n>>>>>>> REPLACE\n",
+    "a.txt": "one\ntwo\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M a.txt\nok: 1 file\n",
+    "changes": {
+     "a.txt": "uno\ndos\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-s-fuzz-04-19",
+   "group": "search-replace",
+   "family": "s-fuzz-04",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "a.txt\n<<<<<<< SEARCH\ndef f():\n    return 1\n=======\ndef f():\n    return 2\n>>>>>>> REPLACE\n",
+    "a.txt": "    def f():\n        return 1\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M a.txt\nok: 1 file\n",
+    "changes": {
+     "a.txt": "    def f():\n        return 2\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-s-fuzz-05-20",
+   "group": "search-replace",
+   "family": "s-fuzz-05",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "new/dir/f.txt\n<<<<<<< SEARCH\n=======\nhello\n>>>>>>> REPLACE\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "A new/dir/f.txt\nok: 1 file\n",
+    "changes": {
+     "new/dir/f.txt": "hello\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-s-fuzz-06-21",
+   "group": "search-replace",
+   "family": "s-fuzz-06",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "empty.txt\n<<<<<<< SEARCH\n=======\n>>>>>>> REPLACE\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "A empty.txt\nok: 1 file\n",
+    "changes": {
+     "empty.txt": ""
+    }
+   }
+  },
+  {
+   "key": "fuzz-v-fuzz-01-22",
+   "group": "v4a",
+   "family": "v-fuzz-01",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "*** Begin Patch\n*** Update File: old.txt\n*** Move to: new.txt\n*** End Patch\n",
+    "old.txt": "content\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "R old.txt -> new.txt\nok: 1 file\n",
+    "changes": {
+     "old.txt": null,
+     "new.txt": "content\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-v-fuzz-02-23",
+   "group": "v4a",
+   "family": "v-fuzz-02",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "*** Begin Patch\n*** Update File: a.txt\n@@ def f():\n-    return 1\n+    return 2\n*** End Patch\n",
+    "a.txt": "    def f():\n        return 1\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M a.txt\nok: 1 file\n",
+    "changes": {
+     "a.txt": "    def f():\n        return 2\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-v-fuzz-03-24",
+   "group": "v4a",
+   "family": "v-fuzz-03",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "*** Begin Patch\n*** Update File: a.txt\n@@\n x\n-y\n+z\n*** End of File\n*** End Patch\n",
+    "a.txt": "x\ny\nx\ny\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M a.txt\nok: 1 file\n",
+    "changes": {
+     "a.txt": "x\ny\nx\nz\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-v-fuzz-04-25",
+   "group": "v4a",
+   "family": "v-fuzz-04",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "*** Begin Patch\n*** Update File: a.txt\n*** End Patch\n",
+    "a.txt": "x\n"
+   },
+   "expect": {
+    "exit": 2,
+    "stdout": "error: parse 2\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-v-fuzz-05-26",
+   "group": "v4a",
+   "family": "v-fuzz-05",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "*** Begin Patch\n*** Update File: a.txt\n@@\n-x\n+y\n*** Move to: b.txt\n*** End Patch\n",
+    "a.txt": "x\n"
+   },
+   "expect": {
+    "exit": 2,
+    "stdout": "error: parse 6\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-v-fuzz-06-27",
+   "group": "v4a",
+   "family": "v-fuzz-06",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "*** Begin Patch\n*** Update File: a.txt\n@@\n-b\n+B\n*** End Patch\n",
+    "a.txt": "a\nb\nc\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M a.txt\nok: 1 file\n",
+    "changes": {
+     "a.txt": "a\nB\nc\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-v-fuzz-07-28",
+   "group": "v4a",
+   "family": "v-fuzz-07",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "*** Begin Patch\n*** Add File: new.txt\n+line1\n\n+line3\n*** End Patch\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "A new.txt\nok: 1 file\n",
+    "changes": {
+     "new.txt": "line1\n\nline3\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-v-fuzz-08-29",
+   "group": "v4a",
+   "family": "v-fuzz-08",
+   "argv": [
+    "fix.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "fix.patch": "*** Begin Patch\n*** Update File: a.txt\n@@ def f():\n-  return 1\n+  return 9\n*** End Patch\n",
+    "a.txt": "def f():\n  return 1\ndef f():\n  return 2\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M a.txt\nok: 1 file\n",
+    "changes": {
+     "a.txt": "def f():\n  return 9\ndef f():\n  return 2\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-j-fuzz-01-30",
+   "group": "json",
+   "family": "j-fuzz-01",
+   "argv": [
+    "-"
+   ],
+   "stdin": "[{\"path\": \"a.txt\", \"command\": \"create\", \"file_text\": \"hi\\n\"}]\n",
+   "files": {},
+   "expect": {
+    "exit": 0,
+    "stdout": "A a.txt\nok: 1 file\n",
+    "changes": {
+     "a.txt": "hi\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-j-fuzz-02-31",
+   "group": "json",
+   "family": "j-fuzz-02",
+   "argv": [
+    "-"
+   ],
+   "stdin": "{\"path\": \"a.txt\", \"command\": \"str_replace\", \"old_str\": \"aa\", \"new_str\": \"b\"}\n",
+   "files": {
+    "a.txt": "aaa\n"
+   },
+   "expect": {
+    "exit": 1,
+    "stdout": "error: ambiguous a.txt\nfailed: 1 of 1 edits\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-j-fuzz-03-32",
+   "group": "json",
+   "family": "j-fuzz-03",
+   "argv": [
+    "-"
+   ],
+   "stdin": "{\"path\": \"a.txt\", \"command\": \"insert\", \"insert_line\": 0, \"new_str\": \"a\"}\n{\"path\": \"a.txt\", \"command\": \"insert\", \"insert_line\": 3, \"new_str\": \"d\"}\n",
+   "files": {
+    "a.txt": "b\nc\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M a.txt\nok: 1 file\n",
+    "changes": {
+     "a.txt": "a\nb\nc\nd\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-j-fuzz-04-33",
+   "group": "json",
+   "family": "j-fuzz-04",
+   "argv": [
+    "-"
+   ],
+   "stdin": "[{\"path\": \"a.txt\", \"command\": \"create\", \"file_text\": \"x\"}, {\"path\": \"a.txt\", \"command\": \"bogus\"}]\n",
+   "files": {},
+   "expect": {
+    "exit": 2,
+    "stdout": "error: parse 1\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-j-fuzz-05-34",
+   "group": "json",
+   "family": "j-fuzz-05",
+   "argv": [
+    "-"
+   ],
+   "stdin": "{\"path\": \"a.txt\", \"command\": \"create\", \"file_text\": \"x\"}\n\n{\"path\": \"b.txt\", \"command\": \"create\", \"file_text\": \"y\"}\n",
+   "files": {},
+   "expect": {
+    "exit": 0,
+    "stdout": "A a.txt\nA b.txt\nok: 2 files\n",
+    "changes": {
+     "a.txt": "x",
+     "b.txt": "y"
+    }
+   }
+  },
+  {
+   "key": "fuzz-c-fuzz-01-35",
+   "group": "cli",
+   "family": "c-fuzz-01",
+   "argv": [
+    "--check",
+    "p.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "p.patch": "--- a.txt\n+++ a.txt\n@@ -1,1 +1,1 @@\n-old\n+new\n",
+    "a.txt": "old\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M a.txt\nok: 1 file\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-c-fuzz-02-36",
+   "group": "cli",
+   "family": "c-fuzz-02",
+   "argv": [
+    "--strict",
+    "p.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "p.patch": "a.txt\n<<<<<<< SEARCH\nhello\n=======\nhi\n>>>>>>> REPLACE\n",
+    "a.txt": "hello   \n"
+   },
+   "expect": {
+    "exit": 1,
+    "stdout": "error: no-match a.txt\nfailed: 1 of 1 edits\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-c-fuzz-03-37",
+   "group": "cli",
+   "family": "c-fuzz-03",
+   "argv": [
+    "--check",
+    "--check",
+    "p.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "p.patch": "--- a.txt\n+++ a.txt\n@@ -1,1 +1,1 @@\n-old\n+new\n",
+    "a.txt": "old\n"
+   },
+   "expect": {
+    "exit": 2,
+    "stdout": "error: usage\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-c-fuzz-05-38",
+   "group": "cli",
+   "family": "c-fuzz-05",
+   "argv": [
+    "p.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "p.patch": "--- a.txt\n+++ a.txt\n@@ -1,1 +1,1 @@\n-one\n+uno\n--- b.txt\n+++ b.txt\n@@ -1,1 +1,1 @@\n-nope\n+nah\n",
+    "a.txt": "one\n",
+    "b.txt": "two\n"
+   },
+   "expect": {
+    "exit": 1,
+    "stdout": "error: no-match b.txt\nfailed: 1 of 2 edits\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-c-fuzz-06-39",
+   "group": "cli",
+   "family": "c-fuzz-06",
+   "argv": [
+    "p.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "p.patch": "--- ../evil.txt\n+++ ../evil.txt\n@@ -1,1 +1,1 @@\n-x\n+y\n",
+    "a.txt": "x\n"
+   },
+   "expect": {
+    "exit": 1,
+    "stdout": "error: unsafe ../evil.txt\nfailed: 1 of 1 edits\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-c-fuzz-07-40",
+   "group": "cli",
+   "family": "c-fuzz-07",
+   "argv": [
+    "-"
+   ],
+   "stdin": "",
+   "files": {},
+   "expect": {
+    "exit": 2,
+    "stdout": "error: format\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-c-fuzz-08-41",
+   "group": "cli",
+   "family": "c-fuzz-08",
+   "argv": [
+    "nope.patch"
+   ],
+   "stdin": null,
+   "files": {},
+   "expect": {
+    "exit": 2,
+    "stdout": "error: no-patch\n",
+    "changes": {}
+   }
+  },
+  {
+   "key": "fuzz-c-fuzz-09-42",
+   "group": "cli",
+   "family": "c-fuzz-09",
+   "argv": [
+    "--",
+    "p.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "p.patch": "--- a.txt\n+++ a.txt\n@@ -1,1 +1,1 @@\n-old\n+new\n",
+    "a.txt": "old\n"
+   },
+   "expect": {
+    "exit": 0,
+    "stdout": "M a.txt\nok: 1 file\n",
+    "changes": {
+     "a.txt": "new\n"
+    }
+   }
+  },
+  {
+   "key": "fuzz-c-fuzz-10-43",
+   "group": "cli",
+   "family": "c-fuzz-10",
+   "argv": [
+    "p.patch"
+   ],
+   "stdin": null,
+   "files": {
+    "p.patch": "diff --git a/gone.txt b/here.txt\nrename from gone.txt\nrename to here.txt\n--- a/gone.txt\n+++ b/here.txt\n@@ -1,1 +1,1 @@\n-x\n+y\n"
+   },
+   "expect": {
+    "exit": 1,
+    "stdout": "error: missing gone.txt\nfailed: 1 of 1 edits\n",
+    "changes": {}
+   }
+  }
+ ]
+}
